@@ -9,13 +9,28 @@
     text-align: center;
     height: fit-content;
     margin-top: 20px;
+    width: max-content;
 }
 
 .editor-right-panel{
     width: 15%;
     display: flex;
-    justify-content: center;
+    /*justify-content: center;*/
+    align-items: center;
+    flex-direction: column;
     background-color: rgb(249, 249, 249);
     border-left: 1px solid var(--super-light-gray-2);
     /*border-top: 1px solid var(--super-light-gray-2);*/
+}
+
+.texting-event-container{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+;
+}
+.texting-event-container span{
+    font-size: 0.8rem;
 }

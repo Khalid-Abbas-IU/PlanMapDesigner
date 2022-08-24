@@ -3,7 +3,7 @@ import './index.css'
 import EditorButton from "../fab-button";
 import LabeledTextInput from "../lblTextInput";
 
-const EditPopup =({selectedmark,onCloseModal})=>{
+const EditPopup =({selectedMark,onCloseModal,handleTextChanged})=>{
     return (
         <div className={`edit-popup-wrapper center-content`}>
             <div className={"popup-header"}>
@@ -13,7 +13,7 @@ const EditPopup =({selectedmark,onCloseModal})=>{
 
             </div>
             <div className={"popup-body"}>
-                <LabeledTextInput label={"Link here"} customClass={"popup-input"} inputValue={selectedmark}/>
+                <LabeledTextInput label={"Link here"} customClass={"popup-input"} inputValue={selectedMark} handleTextChanged={handleTextChanged}/>
             </div>
             <div className={"popup-bottom"}>
                 <EditorButton buttText={'Cancel'} customClass={"popup-button"} onClicked={onCloseModal}/>

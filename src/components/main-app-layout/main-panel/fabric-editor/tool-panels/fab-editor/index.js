@@ -14,7 +14,8 @@ const FabEditor = () =>{
     const [editPopUp, setEditPopUp] = useState(false);
     const [confirmMessage, setConfirmMessage] = useState(false);
     const [confirmed, setConfirmed] = useState(false);
-    const [selectedmark, setSelectedmark] = useState("");
+    const [selectedMark, setSelectedMark] = useState("");
+    const [testingText, setTestingText] = useState("Here you can show the data");
 
     useEffect(() => {
         document.addEventListener('wheel', function(e) { e.ctrlKey && e.preventDefault(); }, {passive: false,});
@@ -40,26 +41,12 @@ const FabEditor = () =>{
         canvas = new fabric.Canvas('canvas',{
             width:700,
             height:500,
+            allowTouchScrolling: true,
             backgroundColor:'white',
             hoverCursor: 'grab',
             moveCursor:'grabbing',
             selection: false,
         })
-        canvas.on({
-            'touch:gesture': function () {
-                console.log("geature")
-            },
-            'touch:drag': function () {
-                console.log("drag")
-
-            },
-            'touch:orientation': function () {
-                console.log("orientation")
-            },
-            'touch:longpress': function () {
-                console.log("longpress")
-            }
-        });
         canvas.defaultCursor = `grab`;
         canvas.hoverCursor = `grab`;
         canvas.moveCursor = `grab`;
@@ -85,7 +72,7 @@ const FabEditor = () =>{
             'mouse:down':mouseDown,
             'after:render':afterRender,
             'key:down':onKeyDown,
-            'mouse:wheel':mouseWheel
+            'mouse:wheel':mouseWheel,
         })
     }
     // function offCanvasEvents(canvas){
@@ -249,7 +236,7 @@ const FabEditor = () =>{
                 const {flag, objRef} = getPositionOnMark(p.x, p.y, obj);
                 if (flag){
                     setEditPopUp(true);
-                    setSelectedmark(objRef)
+                    setSelectedMark(objRef)
                 }
 
             }
@@ -299,7 +286,7 @@ const FabEditor = () =>{
             setConfirmed(false)
             lastSelectedObjProps ={};
         };
-        img.src = './assets/images/map-location.png';
+        img.src = './PlanMapDesigner/assets/images/map-location.png';
     }
     const mouseDown=(e)=>{}
     const objectAdded=(e)=>{}
@@ -345,7 +332,7 @@ const FabEditor = () =>{
 
     const addBluePrint =()=>{
         if (isMarkerState && canvas.getObjects().length) return;
-        addImage('./assets/images/blueprints/FLOOR-PLAN-BUILDINGS.jpg')
+        addImage('./PlanMapDesigner/assets/images/blueprints/FLOOR-PLAN-BUILDINGS.jpg')
     }
     
     const deleteActObject =()=>{
@@ -378,6 +365,9 @@ const FabEditor = () =>{
             default:break;
         }
     }
+    const handleTextChanged =(value)=>{
+        console.log("value",value)
+    }
     return (
         <div className="fabric-editor-container">
             <EditorHeader/>
@@ -389,9 +379,9 @@ const FabEditor = () =>{
                         <canvas id="canvas" width={1000} height={800}/>
                     </div>
                 </div>
-                <FabEditorRight deleteActObject={deleteActObject}/>
+                <FabEditorRight deleteActObject={deleteActObject} testingText={testingText}/>
             </div>
-            { editPopUp && <EditPopup selectedmark={selectedmark} onCloseModal={()=>onCloseModal("edit")} onProceed={onProceed}/>}
+            { editPopUp && <EditPopup selectedMark={selectedMark} onCloseModal={()=>onCloseModal("edit")} onProceed={onProceed} handleTextChanged={handleTextChanged}/>}
             { confirmMessage && <ConfirmPopup onCloseModal={()=>onCloseModal("confirm")} onProceed={()=>onProceed('confirm')}/> }
         </div>
     );
