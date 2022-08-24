@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/PlanMapDesigner/static/css/main.ff12371b.css",
+    "main.js": "/PlanMapDesigner/static/js/main.a53f9623.js",
+    "index.html": "/PlanMapDesigner/index.html",
+    "main.ff12371b.css.map": "/PlanMapDesigner/static/css/main.ff12371b.css.map",
+    "main.a53f9623.js.map": "/PlanMapDesigner/static/js/main.a53f9623.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ff12371b.css",
+    "static/js/main.a53f9623.js"
+  ]
+}
