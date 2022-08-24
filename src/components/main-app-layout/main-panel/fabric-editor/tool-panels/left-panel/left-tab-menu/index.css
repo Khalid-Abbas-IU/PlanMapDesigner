@@ -1,0 +1,36 @@
+.editor-left-menu{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: var(--left-panel-color);
+    border-right: 1px solid var(--super-light-gray-2);
+    font-size: 12px;
+}
+.left-tab-bar{
+    margin-top: 8px;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.fab-icon-button{
+    color: #626262;
+    /*width: max-content;*/
+    cursor: pointer;
+    padding: 3px 8px;
+    border: 1px solid grey;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 20px;
+}
+.fab-icon-button:hover{
+    /*border-color: brown;*/
+    color: #4fac9a;
+    background: #f5f8f8;
+}
+.center-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

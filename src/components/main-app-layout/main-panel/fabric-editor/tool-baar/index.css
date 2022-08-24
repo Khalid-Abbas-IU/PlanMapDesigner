@@ -1,0 +1,38 @@
+.toolbaar-container{
+    position: relative;
+    /*width: 100%;*/
+    /*height: 22px;*/
+    /*display: flex;*/
+    /*justify-content: flex-start;*/
+    /*align-items: center;*/
+    /*padding: 0px 0px 5px 0px;*/
+}
+.editor-tool-btn{
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    z-index: 9999;
+    background: #eaeaea;
+    border-radius: 2px;
+    border: 1px solid darkgrey;
+    /*width: 25px;*/
+    /*height: 20px;*/
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 3px 5px
+}
+.editor-tool-btn span{
+    color: white;
+}
+.editor-tool-btn:hover{
+    background: whitesmoke;
+    color: #4fac9a;
+    border-color: blue;
+    /*font-weight: 700;*/
+}
+.center-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

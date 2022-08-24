@@ -1,0 +1,50 @@
+.fab-editor-header{
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 63px;
+    align-items: center;
+    height: var(--fab-editor-header-height);
+    background: var(--header-color);
+    border-bottom: 1px solid var(--super-light-gray-2);
+}
+.nav-right-container{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+}
+
+.nav-tools-btn{
+    /*background: #4fac9a;*/
+    color: #4fac9a;
+    width: 100px;
+    height: 25px;
+    margin-right: 10px;
+    font-size: 13px;
+    border: 1px solid #4fac9a;
+}
+
+.logo-cls{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 130px;
+    width: 160px;
+}
+
+.logo-container ,
+.proceed-btn-container{
+    /*width: 340px;*/
+}
+.logo-container {
+}
+
+.proceed_btn{
+    background: #4fac9a;
+    color: white;
+    width: 100px;
+    height: 27px;
+    font-size: 13px;
+    border-color: #4fac9a;
+    /*margin-right: 20px;*/
+}

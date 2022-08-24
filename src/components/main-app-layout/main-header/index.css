@@ -1,0 +1,25 @@
+.main-app-header{
+    position: fixed;
+    top: 0px;
+    min-height: var(--app-header-height);
+    max-height: var(--app-header-height);
+    width: 100vw;
+    background: white;
+    border-bottom: 1px solid var(--super-light-gray-2);
+    font-family: 'Manrope', sans-serif !important;
+    z-index: 9999;
+}
+.main-header-left{
+    width: 30%;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    color: dimgrey;
+
+}
+.main-header-right{
+width: 50%;
+display: flex;
+justify-content: flex-end;
+align-items: center;
+    font-size: 14px;
+}
