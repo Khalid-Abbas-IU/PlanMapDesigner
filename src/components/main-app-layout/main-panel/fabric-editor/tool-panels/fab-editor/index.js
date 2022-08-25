@@ -171,6 +171,37 @@ const FabEditor = () =>{
         opt.e.preventDefault();
         opt.e.stopPropagation();
     }
+    const zoomIn =()=> {
+        let zoom = canvas.getZoom();
+        zoom  += 0.1;
+        if (zoom > 20) zoom = 20;
+        if (zoom < 0.01) zoom = 0.01;
+        const bpInd = canvas._objects.findIndex(o=>o.name === "blue_print");
+        let x = canvas.width/2,y=canvas.height/2;
+        if (bpInd > -1){
+            x = canvas._objects[bpInd].left;
+            y = canvas._objects[bpInd].top;
+            setCanvasZoom(zoom,{x,y})
+        } else setCanvasZoom(zoom,{x,y})
+    }
+    const zoomOut =()=> {
+        let zoom = canvas.getZoom();
+        zoom  -= 0.1;
+        if (zoom > 20) zoom = 20;
+        if (zoom < 0.01) zoom = 0.01;
+        const bpInd = canvas._objects.findIndex(o=>o.name === "blue_print");
+        let x = canvas.width/2,y=canvas.height/2;
+        if (bpInd > -1){
+            x = canvas._objects[bpInd].left;
+            y = canvas._objects[bpInd].top;
+            setCanvasZoom(zoom,{x,y})
+        } else setCanvasZoom(zoom,{x,y})
+
+    }
+    const zoomReset =()=> {
+        let x = canvas.width/2,y=canvas.height/2;
+        setCanvasZoom(1,{x,y})
+    }
 
     const setCanvasZoom =(zoom,pointer)=> {
         canvas.zoomToPoint(
@@ -286,7 +317,7 @@ const FabEditor = () =>{
             setConfirmed(false)
             lastSelectedObjProps ={};
         };
-        img.src = './PlanMapDesigner/assets/images/map-location.png';
+        img.src = './assets/images/map-location.png';
     }
     const mouseDown=(e)=>{}
     const objectAdded=(e)=>{}
@@ -322,7 +353,7 @@ const FabEditor = () =>{
                 stroke:"black",
                 strokeWidth:5
             });
-            imgInstance.scaleToHeight(canvas.getWidth() * 0.4);
+            imgInstance.scaleToHeight(canvas.getWidth() * 0.5);
             canvas.renderAll();
             canvas.add(imgInstance);
             canvas.setActiveObject(imgInstance);
@@ -333,7 +364,7 @@ const FabEditor = () =>{
     const addBluePrint =()=>{
         const bpInd = canvas.getObjects().findIndex(o=>o.name === "blue_print");
         if (bpInd > -1 || isMarkerState && canvas.getObjects().length) return;
-        addImage('./PlanMapDesigner/assets/images/blueprints/FLOOR-PLAN-BUILDINGS.jpg')
+        addImage('./assets/images/blueprints/FLOOR-PLAN-BUILDINGS.jpg')
     }
     
     const deleteActObject =()=>{
@@ -366,8 +397,8 @@ const FabEditor = () =>{
             default:break;
         }
     }
-    const handleTextChanged =(value)=>{
-        console.log("value",value)
+    const handleTextChanged =(e)=>{
+        setSelectedMark(e.target.value)
     }
     return (
         <div className="fabric-editor-container">
@@ -375,7 +406,7 @@ const FabEditor = () =>{
             <div className="editor-main-wrapper">
                 <FabEditorLeft onToggleMarker={onToggleMarker} addBluePrint={addBluePrint}/>
                 <div className={"canvas-main-wrapper"}>
-                    <ToolBaar onToggleMarker={onToggleMarker} markerMode={isMarkerState}/>
+                    <ToolBaar onToggleMarker={onToggleMarker} markerMode={isMarkerState} zoomIn={zoomIn} zoomOut={zoomOut} zoomReset={zoomReset}/>
                     <div className={`fabric-editor-pro center-content-column`}>
                         <canvas id="canvas" width={1000} height={800}/>
                     </div>

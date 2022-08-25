@@ -13,17 +13,18 @@
     align-items: center;
     flex-direction: column;
 }
-.fab-icon-button{
+.fab-icon-button-left{
+    user-select: none;
     color: #626262;
     /*width: max-content;*/
     cursor: pointer;
     padding: 3px 8px;
     border: 1px solid grey;
-    border-radius: 4px;
+    border-radius: 2px;
     text-align: center;
     margin-top: 20px;
 }
-.fab-icon-button:hover{
+.fab-icon-button-left:hover{
     /*border-color: brown;*/
     color: #4fac9a;
     background: #f5f8f8;

@@ -6,11 +6,11 @@ const LeftTabMenu =({addBluePrint,onToggleMarker})=>{
     return (
         <div className="editor-left-menu">
             <div className={"left-tab-bar"}>
-                <div className="fab-icon-button" onClick={addBluePrint}>
+                <div className="fab-icon-button-left" onClick={addBluePrint}>
                     {/*<img src={'My_Portfolio/images/black/text.png'} height={23} width={23}/>*/}
                     <span>Blue Print</span>
                 </div>
-                <div className="fab-icon-button" onClick={onToggleMarker}>
+                <div className="fab-icon-button-left" onClick={onToggleMarker}>
                     <span>Marker</span>
                 </div>
             </div>

@@ -16,6 +16,7 @@
 
 .nav-tools-btn{
     /*background: #4fac9a;*/
+    user-select: none;
     color: #4fac9a;
     width: 100px;
     height: 25px;
@@ -40,6 +41,7 @@
 }
 
 .proceed_btn{
+    user-select: none;
     background: #4fac9a;
     color: white;
     width: 100px;
