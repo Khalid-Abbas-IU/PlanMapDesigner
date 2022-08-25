@@ -286,7 +286,7 @@ const FabEditor = () =>{
             setConfirmed(false)
             lastSelectedObjProps ={};
         };
-        img.src = './PlanMapDesigner/assets/images/map-location.png';
+        img.src = '/assets/images/map-location.png';
     }
     const mouseDown=(e)=>{}
     const objectAdded=(e)=>{}
@@ -332,7 +332,7 @@ const FabEditor = () =>{
 
     const addBluePrint =()=>{
         if (isMarkerState && canvas.getObjects().length) return;
-        addImage('./PlanMapDesigner/assets/images/blueprints/FLOOR-PLAN-BUILDINGS.jpg')
+        addImage('/assets/images/blueprints/FLOOR-PLAN-BUILDINGS.jpg')
     }
     
     const deleteActObject =()=>{
