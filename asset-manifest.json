@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/PlanMapDesigner/static/css/main.7c4583b1.css",
-    "main.js": "/PlanMapDesigner/static/js/main.b389e002.js",
+    "main.js": "/PlanMapDesigner/static/js/main.4f57797d.js",
     "index.html": "/PlanMapDesigner/index.html",
     "main.7c4583b1.css.map": "/PlanMapDesigner/static/css/main.7c4583b1.css.map",
-    "main.b389e002.js.map": "/PlanMapDesigner/static/js/main.b389e002.js.map"
+    "main.4f57797d.js.map": "/PlanMapDesigner/static/js/main.4f57797d.js.map"
   },
   "entrypoints": [
     "static/css/main.7c4583b1.css",
-    "static/js/main.b389e002.js"
+    "static/js/main.4f57797d.js"
   ]
 }
