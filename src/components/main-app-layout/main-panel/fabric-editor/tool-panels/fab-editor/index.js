@@ -289,7 +289,7 @@ const FabEditor = () =>{
             setConfirmed(false)
             lastSelectedObjProps ={};
         };
-        img.src = './PlanMapDesigner/assets/images/pin-location.png';
+        img.src = './assets/images/pin-location.png';
     }
     const addMakerTemp = (pointers)=> {
         const uuid = require("uuid");
@@ -318,7 +318,7 @@ const FabEditor = () =>{
             canvas.add(imgInstance);
             canvas.renderAll();
         };
-        img.src = './PlanMapDesigner/assets/images/pin-location-temp.png';
+        img.src = './assets/images/pin-location-temp.png';
     }
     const mouseDown=(e)=>{
         isClickedOnCanvas = true
@@ -380,7 +380,7 @@ const FabEditor = () =>{
     const addBluePrint =()=>{
         const bpInd = canvas.getObjects().findIndex(o=>o.name === "blue_print");
         if (bpInd > -1 || isMarkerState && canvas.getObjects().length) return;
-        addImage('./PlanMapDesigner/assets/images/blueprints/FLOOR-PLAN-BUILDINGS.jpg')
+        addImage('./assets/images/blueprints/FLOOR-PLAN-BUILDINGS.jpg')
     }
     
     const deleteActObject =()=>{
