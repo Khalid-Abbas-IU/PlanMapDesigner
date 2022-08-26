@@ -7,7 +7,7 @@ import ToolBaar from "../../tool-baar";
 import EditPopup from "../../customComponents/edit-popup";
 import ConfirmPopup from "../../customComponents/confirm-popup";
 const {EditorHeader,FabEditorLeft,FabEditorRight}=EditorPanels;
-let canvas , markerMode = false,lastSelectedObjProps={};
+let canvas , markerMode = false,lastSelectedObjProps={},isClickedOnCanvas=false;
 
 const FabEditor = () =>{
     const [isMarkerState, setIsMarkerState] = useState(false);
@@ -31,8 +31,8 @@ const FabEditor = () =>{
     useEffect(() => {
         if (confirmed){
             if (lastSelectedObjProps && lastSelectedObjProps.hasOwnProperty('pointers')){
-                const {pointers,actObj}=lastSelectedObjProps;
-                addMakerPoint(pointers, actObj);
+                const {pointers}=lastSelectedObjProps;
+                addMakerPoint(pointers);
             }
         }
     },[confirmed]);
@@ -43,8 +43,6 @@ const FabEditor = () =>{
             height:500,
             allowTouchScrolling: true,
             backgroundColor:'white',
-            hoverCursor: 'grab',
-            moveCursor:'grabbing',
             selection: false,
         })
         canvas.defaultCursor = `grab`;
@@ -68,33 +66,13 @@ const FabEditor = () =>{
             'object:rotating':objectRotating,
             'mouse:up':mouseUp,
             // 'mouse:over':mouseOver,
-            'mouse:move':mouseOver,
+            'mouse:move':mouseMove,
             'mouse:down':mouseDown,
             'after:render':afterRender,
             'key:down':onKeyDown,
             'mouse:wheel':mouseWheel,
         })
     }
-    // function offCanvasEvents(canvas){
-    //     canvas.off({
-    //         'object:added': objectAdded,
-    //         'selection:created': selectionCreated,
-    //         'selection:updated': selectionUpdated,
-    //         'object:moving': objectMoving,
-    //         'object:modified' : modifiedObject,
-    //         'object:scaling':objectScaling,
-    //         'object:scaled':objectScaled,
-    //         'object:rotating':objectRotating,
-    //         'mouse:up':mouseUp,
-    //         // 'mouse:over':mouseOver,
-    //         'mouse:move':mouseOver,
-    //         'mouse:down':mouseDown,
-    //         'after:render':afterRender,
-    //         'key:down':onKeyDown,
-    //         'mouse:wheel':mouseWheel
-    //     });
-    // }
-
     const enableMarkerMode =(isMarkerState)=>{
         const cursor = isMarkerState ? 'crosshair' : 'grab';
         if (isMarkerState) {
@@ -157,6 +135,8 @@ const FabEditor = () =>{
             height = elHeight;
         canvas.setWidth(width)
         canvas.setHeight(height)
+        canvas.set('originalWidth',width)
+        canvas.set('originalHeight',height)
         canvas.renderAll();
     }
     const mouseWheel =(opt)=> {
@@ -238,55 +218,53 @@ const FabEditor = () =>{
         }
         return result;
     }
+    const mouseMove=(e)=>{
+        if (!isClickedOnCanvas) return;
+        var units = 10;
+        var delta = new fabric.Point(e.e.movementX, e.e.movementY);
+        canvas.relativePan(delta);
+    }
 
     const mouseOver =(e)=>{
-        let obj = e.target;
-        if (!obj) return;
-        if (obj.type === "group" && obj.name === "blue_print"){
-            const {x,y} = canvas.getPointer(e)
-            const {flag} = getPositionOnMark(x,y,obj);
-            let cursor = (isMarkerState || markerMode) ? 'crosshair' : 'grab';
-            if (flag) cursor = 'pointer'
-            canvas.set({
-                defaultCursor : cursor,
-                hoverCursor : cursor,
-                moveCursor : cursor,
-            });
-            canvas.renderAll();
-        }
+        // let obj = e.target;
+        // if (!obj) return;
+        // if (obj.type === "group" && obj.name === "blue_print"){
+        //     const {x,y} = canvas.getPointer(e)
+        //     const {flag} = getPositionOnMark(x,y,obj);
+        //     let cursor = (isMarkerState || markerMode) ? 'crosshair' : 'grab';
+        //     if (flag) cursor = 'pointer'
+        //     canvas.set({
+        //         defaultCursor : cursor,
+        //         hoverCursor : cursor,
+        //         moveCursor : cursor,
+        //     });
+        //     canvas.renderAll();
+        // }
     }
     const mouseUp=(e)=>{
         let obj = e.target;
+        isClickedOnCanvas = false
         if (!obj) return;
         if (obj.name === "blue_print") {
             const p = canvas.getPointer(e)
             if (isMarkerState || markerMode) {
                 lastSelectedObjProps = {pointers:p,actObj:obj};
+                addMakerTemp(p)
                 setConfirmMessage(true)
-            }else {
-                const {flag, objRef} = getPositionOnMark(p.x, p.y, obj);
-                if (flag){
-                    setEditPopUp(true);
-                    setSelectedMark(objRef)
-                }
-
             }
         }
     }
-    const addMakerPoint = (pointers,bluePrint)=> {
+    const addMakerPoint = (pointers)=> {
         const uuid = require("uuid");
         let id = uuid.v4();
-        const {x, y} = pointers;
-        if (canvas.getActiveObject() === bluePrint) canvas.discardActiveObject();
-        let actObjs = [bluePrint];
-        if (bluePrint.type === 'group'){
-            actObjs =bluePrint._objects;
-            bluePrint._restoreObjectsState();
-            canvas.remove(bluePrint);
+        const tempMarkerInd = canvas._objects.findIndex(o=>o.name === "pin_location_temp");
+        if (tempMarkerInd > -1) {
+            canvas.remove(canvas._objects[tempMarkerInd])
+            canvas.renderAll();
         }
+        const {x, y} = pointers;
         let left = x,
             top = y;
-
         let img = new Image();
         img.crossOrigin = "Anonymous";
         img.onload = function () {
@@ -298,34 +276,71 @@ const FabEditor = () =>{
                 originX: 'center',
                 originY: 'center',
                 name: "pin_location",
-                perPixelTargetFind:true
+                lockMovementX:true,
+                lockMovementY:true,
+                perPixelTargetFind:true,
+                hoverCursor:'pointer'
             });
-            imgInstance.scaleToWidth(50);
+            imgInstance.scaleToWidth(canvas.width * 0.05);
             imgInstance.set('top',top - imgInstance.getScaledHeight()/2 + 1);
-            canvas.remove(bluePrint)
-            let id1 = uuid.v4();
-            let numGroup = new fabric.Group([...actObjs,imgInstance], {
-                ref_id: id1,
-                name: "blue_print",
-                originX: 'center',
-                originY: 'center',
-            });
-            canvas.add(numGroup);
+            canvas.add(imgInstance);
             canvas.renderAll();
-
             setIsMarkerState(!markerMode)
             setConfirmed(false)
             lastSelectedObjProps ={};
         };
-        img.src = './assets/images/map-location.png';
+        img.src = './PlanMapDesigner/assets/images/pin-location.png';
     }
-    const mouseDown=(e)=>{}
+    const addMakerTemp = (pointers)=> {
+        const uuid = require("uuid");
+        let id = uuid.v4();
+        const {x, y} = pointers;
+        let left = x,
+            top = y;
+        let img = new Image();
+        img.crossOrigin = "Anonymous";
+        img.onload = function () {
+            let imgInstance = new fabric.Image(img, {
+                crossOrigin : "Anonymous",
+                ref_id: id,
+                left,
+                top,
+                originX: 'center',
+                originY: 'center',
+                name: "pin_location_temp",
+                lockMovementX:true,
+                lockMovementY:true,
+                perPixelTargetFind:true,
+                hoverCursor:'pointer'
+            });
+            imgInstance.scaleToWidth(canvas.width * 0.05);
+            imgInstance.set('top',top - imgInstance.getScaledHeight()/2 + 1);
+            canvas.add(imgInstance);
+            canvas.renderAll();
+        };
+        img.src = './PlanMapDesigner/assets/images/pin-location-temp.png';
+    }
+    const mouseDown=(e)=>{
+        isClickedOnCanvas = true
+    }
     const objectAdded=(e)=>{}
     const selectionCreated=()=>{
         let obj = canvas.getActiveObject();
         if (!obj) return;
+        if (obj.name === "pin_location"){
+            setEditPopUp(true);
+            setSelectedMark(obj.ref_id)
+        }
     }
-    const selectionUpdated=(e)=>{}
+    const selectionUpdated=(e)=>{
+        setEditPopUp(false);
+        let obj = canvas.getActiveObject();
+        if (!obj) return;
+        if (obj.name === "pin_location"){
+            setEditPopUp(true);
+            setSelectedMark(obj.ref_id)
+        }
+    }
     const modifiedObject=(e)=>{}
     const objectScaling=(e)=>{}
     const objectScaled=(e)=>{}
@@ -351,7 +366,8 @@ const FabEditor = () =>{
                 name: "blue_print",
                 perPixelTargetFind:true,
                 stroke:"black",
-                strokeWidth:5
+                strokeWidth:5,
+                selectable:false
             });
             imgInstance.scaleToHeight(canvas.getWidth() * 0.5);
             canvas.renderAll();
@@ -364,18 +380,24 @@ const FabEditor = () =>{
     const addBluePrint =()=>{
         const bpInd = canvas.getObjects().findIndex(o=>o.name === "blue_print");
         if (bpInd > -1 || isMarkerState && canvas.getObjects().length) return;
-        addImage('./assets/images/blueprints/FLOOR-PLAN-BUILDINGS.jpg')
+        addImage('./PlanMapDesigner/assets/images/blueprints/FLOOR-PLAN-BUILDINGS.jpg')
     }
     
     const deleteActObject =()=>{
-        const actObj = canvas.getActiveObject();
-        if (!actObj) return;
-        canvas.remove(actObj)
+        for (let i = 0; i < canvas._objects.length; i++) {
+            canvas.remove(canvas._objects[i])
+        }
         canvas.renderAll();
     }
     const onCloseModal =(type)=>{
+        const tempMarkerInd = canvas._objects.findIndex(o=>o.name === "pin_location_temp");
+        if (tempMarkerInd > -1) {
+            canvas.remove(canvas._objects[tempMarkerInd])
+            canvas.renderAll();
+        }
         switch (type){
             case "edit":
+                if (canvas?.getActiveObject()) canvas.discardActiveObject();
                 setEditPopUp(false)
                 break;
             case "confirm":
