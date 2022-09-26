@@ -6,6 +6,7 @@ import EditorPanels from '../../index'
 import ToolBaar from "../../tool-baar";
 import EditPopup from "../../customComponents/edit-popup";
 import ConfirmPopup from "../../customComponents/confirm-popup";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 const {EditorHeader,FabEditorLeft,FabEditorRight}=EditorPanels;
 let canvas , markerMode = false,lastSelectedObjProps={},isClickedOnCanvas=false;
 
@@ -18,8 +19,8 @@ const FabEditor = () =>{
     const [testingText, setTestingText] = useState("Here you can show the data");
 
     useEffect(() => {
-        document.addEventListener('wheel', function(e) { e.ctrlKey && e.preventDefault(); }, {passive: false,});
-        window.addEventListener('resize', function(e) { adjustCanvasDimensions(); }, true);
+        // document.addEventListener('wheel', function(e) { e.ctrlKey && e.preventDefault(); }, {passive: false,});
+        // window.addEventListener('resize', function(e) { adjustCanvasDimensions(); }, true);
         inItCanvas();
     },[]);
 
@@ -429,9 +430,16 @@ const FabEditor = () =>{
                 <FabEditorLeft onToggleMarker={onToggleMarker} addBluePrint={addBluePrint}/>
                 <div className={"canvas-main-wrapper"}>
                     <ToolBaar onToggleMarker={onToggleMarker} markerMode={isMarkerState} zoomIn={zoomIn} zoomOut={zoomOut} zoomReset={zoomReset}/>
-                    <div className={`fabric-editor-pro center-content-column`}>
-                        <canvas id="canvas" width={1000} height={800}/>
-                    </div>
+
+                            <div className={`fabric-editor-pro center-content-column`} aria-disabled={true}>
+                                <TransformWrapper disabled={true}>
+                                    <TransformComponent disabled={true}>
+                                        <canvas id="canvas" width={1000} height={800}/>
+                                    </TransformComponent>
+                                </TransformWrapper>
+                            </div>
+
+
                 </div>
                 <FabEditorRight deleteActObject={deleteActObject} testingText={testingText}/>
             </div>
